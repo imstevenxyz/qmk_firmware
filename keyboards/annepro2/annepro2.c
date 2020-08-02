@@ -52,6 +52,16 @@ void annepro2LedEnable(void)
     sdPut(&SD0, CMD_LED_ON);
 }
 
+void annepro2LedBrightnessDown(void)
+{
+    sdPut(&SD0, CMD_LED_BRT_DOWN);
+}
+
+void annepro2LedBrightnessUp(void)
+{
+    sdPut(&SD0, CMD_LED_BRT_UP);
+}
+
 void annepro2LedUpdate(uint8_t row, uint8_t col)
 {
     sdPut(&SD0, CMD_LED_SET);
