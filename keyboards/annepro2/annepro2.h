@@ -33,10 +33,7 @@ enum AP2KeyCodes {
     AP2_SAFE_RANGE,
 };
 
-void annepro2LedDisable(void);
-void annepro2LedEnable(void);
-void annepro2LedBrightnessDown(void);
-void annepro2LedBrightnessUp(void);
+void sendLedCommand(uint8_t cmd);
 void annepro2LedUpdate(uint8_t row, uint8_t col);
 void annepro2LedUpdateRow(uint8_t row);
 

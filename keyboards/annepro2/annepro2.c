@@ -42,24 +42,8 @@ void OVERRIDE matrix_init_kb(void) {
     matrix_init_user();
 }
 
-void annepro2LedDisable(void)
-{
-    sdPut(&SD0, CMD_LED_OFF);
-}
-
-void annepro2LedEnable(void)
-{
-    sdPut(&SD0, CMD_LED_ON);
-}
-
-void annepro2LedBrightnessDown(void)
-{
-    sdPut(&SD0, CMD_LED_BRT_DOWN);
-}
-
-void annepro2LedBrightnessUp(void)
-{
-    sdPut(&SD0, CMD_LED_BRT_UP);
+void sendLedCommand(uint8_t cmd){
+    sdPut(&SD0, cmd);
 }
 
 void annepro2LedUpdate(uint8_t row, uint8_t col)
