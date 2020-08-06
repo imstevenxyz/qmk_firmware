@@ -4,6 +4,9 @@
 #include "annepro2_ble.h"
 #include "qmk_ap2_led.h"
 
+/*
+ * Serial configuration
+ */
 static const SerialConfig ledUartConfig = {
   .speed = 115200,
 };
@@ -49,6 +52,7 @@ void sendLedCommand(uint8_t cmd){
 void annepro2LedUpdate(uint8_t row, uint8_t col)
 {
     sdPut(&SD0, CMD_LED_SET);
+    sdPut(&SD0, SET_KEY);
     sdPut(&SD0, row);
     sdPut(&SD0, col);
     sdWrite(&SD0, (uint8_t *)&annepro2LedMatrix[row * MATRIX_COLS + col], sizeof(uint32_t));
