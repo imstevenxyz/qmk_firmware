@@ -29,9 +29,6 @@ uint32_t annepro2LedMatrix[MATRIX_ROWS * MATRIX_COLS] = {
 };
 
 void OVERRIDE keyboard_pre_init_kb(void) {
-}
-
-void OVERRIDE keyboard_post_init_kb(void) {
     // Start LED UART
     sdStart(&SD0, &ledUartConfig);
     sdWrite(&SD0, ledMcuWakeup, 11);
@@ -39,6 +36,9 @@ void OVERRIDE keyboard_post_init_kb(void) {
     // Start BLE UART
     sdStart(&SD1, &bleUartConfig);
     annepro2_ble_startup();
+}
+
+void OVERRIDE keyboard_post_init_kb(void) {
 }
 
 void OVERRIDE matrix_init_kb(void) {
