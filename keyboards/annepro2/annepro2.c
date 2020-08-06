@@ -20,37 +20,45 @@ static uint8_t ledMcuWakeup[11] = {
 };
 
 
-uint32_t annepro2LedMatrix[MATRIX_ROWS * MATRIX_COLS] = {
-  0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-  0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-  0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-  0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-  0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-};
+uint32_t annepro2LedMatrix[MATRIX_ROWS * MATRIX_COLS];
 
-void OVERRIDE keyboard_pre_init_kb(void) {
-    // Start LED UART
+/*
+ * Pre init
+ * Start LED MCU
+ * Start BT MCU
+ */
+void keyboard_pre_init_kb(void){
+    keyboard_pre_init_user();
+    
     sdStart(&SD0, &ledUartConfig);
     sdWrite(&SD0, ledMcuWakeup, 11);
 
-    // Start BLE UART
     sdStart(&SD1, &bleUartConfig);
     annepro2_ble_startup();
 }
 
-void OVERRIDE keyboard_post_init_kb(void) {
+/*
+ * Post init
+ */
+void keyboard_post_init_kb(void){
+    keyboard_post_init_user();
 }
 
-void OVERRIDE matrix_init_kb(void) {
+/*
+ * Matrix init
+ */
+void matrix_init_kb(void){
     matrix_init_user();
 }
 
+/*
+ * Send command to LED MCU
+ */
 void sendLedCommand(uint8_t cmd){
     sdPut(&SD0, cmd);
 }
 
-void annepro2LedUpdate(uint8_t row, uint8_t col)
-{
+void annepro2LedUpdate(uint8_t row, uint8_t col){
     sdPut(&SD0, CMD_LED_SET);
     sdPut(&SD0, SET_KEY);
     sdPut(&SD0, row);
@@ -58,18 +66,23 @@ void annepro2LedUpdate(uint8_t row, uint8_t col)
     sdWrite(&SD0, (uint8_t *)&annepro2LedMatrix[row * MATRIX_COLS + col], sizeof(uint32_t));
 }
 
-bool OVERRIDE led_update_kb(led_t status) {
+/*
+ * Update leds based on kb status
+ */
+bool led_update_kb(led_t status){
+    bool res = led_update_user();
     annepro2LedMatrix[2 * MATRIX_COLS] = status.caps_lock ? 0xFF3355 : 0;
     annepro2LedUpdate(2, 0);
-    return led_update_user(status);
+    return res;
 }
 
 /*!
- * @returns false   processing for this keycode has been completed.
+ * Process keypresses
+ * @returns false   process complete
  */
-bool OVERRIDE process_record_kb(uint16_t keycode, keyrecord_t *record) {
-    if (record->event.pressed) {
-        switch (keycode) {
+bool process_record_kb(uint16_t keycode, keyrecord_t *record){
+    if (record->event.pressed){
+        switch (keycode){
             case KC_AP2_BT1:
                 annepro2_ble_broadcast(0);
                 return false;
