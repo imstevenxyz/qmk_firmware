@@ -7,12 +7,14 @@ enum anne_pro_layers {
   _FN1_LAYER,
   _FN2_LAYER,
 };
+
 enum custom_keys {
     KC_AP_LED_ON = AP2_SAFE_RANGE,
     KC_AP_LED_OFF,
     KC_AP_LED_BRT_UP,
     KC_AP_LED_BRT_DOWN
 };
+
 /*
 * Layer _BASE_LAYER
 * ,-----------------------------------------------------------------------------------------.
@@ -25,18 +27,6 @@ enum custom_keys {
 * | Shift      |  z  |  x  |  c  |  v  |  b  |  n  |  m  |  ,  |  .  |  /  |    Shift       |
 * |-----------------------------------------------------------------------------------------+
 * | Ctrl  |  L1   |  Alt  |               space             |  Alt  |  FN1  |  FN2  | Ctrl  |
-* \-----------------------------------------------------------------------------------------/
-* Layer TAP in _BASE_LAYER
-* ,-----------------------------------------------------------------------------------------.
-* |     |     |     |     |     |     |     |     |     |     |     |     |     |           |
-* |-----------------------------------------------------------------------------------------+
-* |        |     |     |     |     |     |     |     |     |     |     |     |     |        |
-* |-----------------------------------------------------------------------------------------+
-* |         |     |     |     |     |     |     |     |     |     |     |     |             |
-* |-----------------------------------------------------------------------------------------+
-* |            |     |     |     |     |     |     |     |     |     |     |       UP       |
-* |-----------------------------------------------------------------------------------------+
-* |       |       |       |                                 |       |  LEFT | DOWN  | RIGHT |
 * \-----------------------------------------------------------------------------------------/
 */
  const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -94,12 +84,10 @@ enum custom_keys {
 };
 const uint16_t keymaps_size = sizeof(keymaps);
 
-
-void matrix_init_user(void) {
-
+void matrix_init_user(void){
 }
 
-void matrix_scan_user(void) {
+void matrix_scan_user(void){
 }
 
 layer_state_t layer_state_set_user(layer_state_t layer) {
@@ -107,7 +95,8 @@ layer_state_t layer_state_set_user(layer_state_t layer) {
 }
 
 /*!
- * @returns false   processing for this keycode has been completed.
+ * Process keypresses
+ * @returns false   process complete
  */
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
