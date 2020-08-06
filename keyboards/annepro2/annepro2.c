@@ -70,9 +70,11 @@ void annepro2LedUpdate(uint8_t row, uint8_t col){
  * Update leds based on kb status
  */
 bool led_update_kb(led_t status){
-    bool res = led_update_user();
-    annepro2LedMatrix[2 * MATRIX_COLS] = status.caps_lock ? 0xFF3355 : 0;
-    annepro2LedUpdate(2, 0);
+    bool res = led_update_user(status);
+    if(res){
+        annepro2LedMatrix[2 * MATRIX_COLS] = status.caps_lock ? 0xFF3355 : 0;
+        annepro2LedUpdate(2, 0);
+    }
     return res;
 }
 
