@@ -21,7 +21,7 @@
 
 #define OVERRIDE __attribute__ ((noinline))
 
-extern uint16_t annepro2LedMatrix[MATRIX_ROWS * MATRIX_COLS];
+extern uint32_t annepro2LedMatrix[MATRIX_ROWS * MATRIX_COLS];
 
 enum AP2KeyCodes {
     KC_AP2_BT1 = SAFE_RANGE,

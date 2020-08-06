@@ -17,7 +17,7 @@ static uint8_t ledMcuWakeup[11] = {
 };
 
 
-uint16_t annepro2LedMatrix[MATRIX_ROWS * MATRIX_COLS] = {
+uint32_t annepro2LedMatrix[MATRIX_ROWS * MATRIX_COLS] = {
   0,0,0,0,0,0,0,0,0,0,0,0,0,0,
   0,0,0,0,0,0,0,0,0,0,0,0,0,0,
   0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -51,18 +51,11 @@ void annepro2LedUpdate(uint8_t row, uint8_t col)
     sdPut(&SD0, CMD_LED_SET);
     sdPut(&SD0, row);
     sdPut(&SD0, col);
-    sdWrite(&SD0, (uint8_t *)&annepro2LedMatrix[row * MATRIX_COLS + col], sizeof(uint16_t));
-}
-
-void annepro2LedUpdateRow(uint8_t row)
-{
-    sdPut(&SD0, CMD_LED_SET_ROW);
-    sdPut(&SD0, row);
-    sdWrite(&SD0, (uint8_t *)&annepro2LedMatrix[row * MATRIX_COLS], sizeof(uint16_t) * MATRIX_COLS);
+    sdWrite(&SD0, (uint8_t *)&annepro2LedMatrix[row * MATRIX_COLS + col], sizeof(uint32_t));
 }
 
 bool OVERRIDE led_update_kb(led_t status) {
-    annepro2LedMatrix[2 * MATRIX_COLS] = status.caps_lock ? 0x4FF : 0;
+    annepro2LedMatrix[2 * MATRIX_COLS] = status.caps_lock ? 0xFF3355 : 0;
     annepro2LedUpdate(2, 0);
     return led_update_user(status);
 }
