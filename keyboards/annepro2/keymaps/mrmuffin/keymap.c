@@ -90,7 +90,15 @@ void matrix_init_user(void){
 void matrix_scan_user(void){
 }
 
-layer_state_t layer_state_set_user(layer_state_t layer) {
+layer_state_t layer_state_set_user(layer_state_t layer){
+    switch(layer){
+        case _FN1_LAYER:
+            break;
+        case _FN2_LAYER:
+            break;
+        default:
+            break;
+    }
     return layer;
 }
 
