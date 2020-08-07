@@ -42,6 +42,7 @@ void keyboard_pre_init_kb(void){
  */
 void keyboard_post_init_kb(void){
     keyboard_post_init_user();
+    sendLedCommand(CMD_POST_INIT);
 }
 
 /*
