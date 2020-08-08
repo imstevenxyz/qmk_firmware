@@ -34,6 +34,7 @@ enum AP2KeyCodes {
 };
 
 void sendLedCommand(uint8_t cmd);
-void annepro2LedUpdate(uint8_t row, uint8_t col);
-void annepro2LedUpdateRow(uint8_t row);
+void resetColorOverride(void);
+void setKeyColorOverride(uint8_t row, uint8_t col, uint32_t color);
+void setFNLayerColorOverride(uint8_t layer, uint32_t color);
 
