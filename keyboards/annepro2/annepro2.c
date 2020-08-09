@@ -19,8 +19,7 @@ static uint8_t ledMcuWakeup[11] = {
     0x7b, 0x10, 0x43, 0x10, 0x03, 0x00, 0x00, 0x7d, 0x02, 0x01, 0x02
 };
 
-
-uint32_t annepro2LedMatrix[MATRIX_ROWS * MATRIX_COLS];
+bool capsActive = false;
 
 /*
  * Pre init
@@ -59,13 +58,11 @@ void sendLedCommand(uint8_t cmd){
     sdPut(&SD0, cmd);
 }
 
-void annepro2LedUpdate(uint8_t row, uint8_t col){
-    sdPut(&SD0, CMD_LED_SET);
-    sdPut(&SD0, SET_KEY);
-    sdPut(&SD0, row);
-    sdPut(&SD0, col);
-    sdWrite(&SD0, (uint8_t *)&annepro2LedMatrix[row * MATRIX_COLS + col], sizeof(uint32_t));
-}
+/*
+layer_state_t layer_state_set_kb(layer_state_t layer){
+    layer_state_set_user(layer);
+    return layer;
+}*/
 
 /*
  * Update leds based on kb status
@@ -73,10 +70,35 @@ void annepro2LedUpdate(uint8_t row, uint8_t col){
 bool led_update_kb(led_t status){
     bool res = led_update_user(status);
     if(res){
-        annepro2LedMatrix[2 * MATRIX_COLS] = status.caps_lock ? 0xFF3355 : 0;
-        annepro2LedUpdate(2, 0);
+        if(status.caps_lock){
+            setKeyColorOverride(2, 0, 0xFF0000);
+            capsActive = true;
+        }else if(capsActive){
+            capsActive = false;
+            resetColorOverride();
+        }
     }
     return res;
+}
+
+void resetColorOverride(){
+    sendLedCommand(CMD_LED_SET);
+    sendLedCommand(UNSET);
+}
+
+void setKeyColorOverride(uint8_t row, uint8_t col, uint32_t color){
+    sendLedCommand(CMD_LED_SET);
+    sendLedCommand(SET_KEY);
+    sdPut(&SD0, row);
+    sdPut(&SD0, col);
+    sdWrite(&SD0, (uint8_t *)&color, sizeof(uint32_t));
+}
+
+void setFNLayerColorOverride(uint8_t layer, uint32_t color){
+    sendLedCommand(CMD_LED_SET);
+    sendLedCommand(SET_FN);
+    sdPut(&SD0, layer);
+    sdWrite(&SD0, (uint8_t *)&color, sizeof(uint32_t));
 }
 
 /*!
